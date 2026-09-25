@@ -49,3 +49,35 @@ CryptoCurrencyFetcher/
 │   ├── package.json           # Frontend dependencies
 │   └── vite.config.js         # Vite configuration
 └── README.md
+
+```
+
+
+## Setup Instructions
+
+
+### 1. Backend (Python 3.9+)
+```bash
+cd backend
+pip install fastapi uvicorn requests pydantic
+uvicorn main:app --reload
+```
+
+### 2. Frontend (Node.js)
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## Data retrieval issues 
+
+The assignment requires filtering projects where FDV < 100M and Max Supply == Total Supply. 
+Applying these exact filters to the Top 100 cryptocurrencies (Page 1 of the API) naturally yields an empty list, as top-tier projects far exceed $100M in valuation, 
+and most large caps have differing supply metrics. 
+
+As a temporary workaround, we can adjust alter the function 
+def has_valid_fdv(coin: Dict[str, Any]) -> bool:
+    return (coin.get("fully_diluted_valuation") or float('inf')) < 100_000_000
+
+inside of the FilterService.py file. And lower the threshold for fdv from 100m to 0.
